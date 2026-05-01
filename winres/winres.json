@@ -1,0 +1,60 @@
+{
+  "RT_GROUP_ICON": {
+    "APP": {
+      "0000": [
+        "icon.png"
+      ]
+    }
+  },
+  "RT_MANIFEST": {
+    "#1": {
+      "0409": {
+        "identity": {
+          "name": "X Server",
+          "version": "1.0.0.1"
+        },
+        "description": "X HTTP Server",
+        "minimum-os": "win10",
+        "execution-level": "as invoker",
+        "ui-access": false,
+        "auto-elevate": false,
+        "dpi-awareness": "system",
+        "disable-theming": false,
+        "disable-window-filtering": false,
+        "high-resolution-scrolling-aware": false,
+        "ultra-high-resolution-scrolling-aware": false,
+        "long-path-aware": false,
+        "printer-driver-isolation": false,
+        "gdi-scaling": false,
+        "segment-heap": false,
+        "use-common-controls-v6": false
+      }
+    }
+  },
+  "RT_VERSION": {
+    "#1": {
+      "0000": {
+        "fixed": {
+          "file_version": "1.0.0.1",
+          "product_version": "1.0.0.1"
+        },
+        "info": {
+          "0409": {
+            "Comments": "",
+            "CompanyName": "X Lucifer",
+            "FileDescription": "X HTTP Server",
+            "FileVersion": "1.0.0.1",
+            "InternalName": "",
+            "LegalCopyright": "Copyright (c) Lucifer. All rights reserved.",
+            "LegalTrademarks": "X",
+            "OriginalFilename": "",
+            "PrivateBuild": "",
+            "ProductName": "X HTTP Server",
+            "ProductVersion": "1.0.0.1",
+            "SpecialBuild": ""
+          }
+        }
+      }
+    }
+  }
+}

@@ -3,7 +3,14 @@
 > 使用`Gin`框架实现的高性能静态文件服务器
 
 #### 编译资源文件
-> windres -i resource.rc -o resource.syso
+- ##### 安装依赖
+> go install github.com/tc-hib/go-winres@latest
+
+- ##### 初始化
+> go-winres init
+
+- ##### 构建资源
+> go-winres make
 
 #### 打包构建
 > go build
@@ -16,4 +23,4 @@
         -d string   Specify the server directory for the HTTP server (default: ./ )
         -h          Show help message
 
-    example: xserver -p 12345 -d dist
+    example: .\xserver -p 12345 -d dist
