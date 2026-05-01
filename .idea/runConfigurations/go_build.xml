@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go build" type="GoApplicationRunConfiguration" factoryName="Go Application" singleton="false" show_console_on_std_err="true" show_console_on_std_out="true">
+    <module name="xserver" />
+    <working_directory value="$PROJECT_DIR$" />
+    <go_parameters value="-o build\\xserver.exe" />
+    <useCustomBuildTags value="true" />
+    <kind value="PACKAGE" />
+    <package value="xserver" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$" />
+    <option name="run" value="false" />
+    <pty_enabled value="true" />
+    <method v="2" />
+  </configuration>
+</component>
