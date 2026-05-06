@@ -21,6 +21,8 @@ func handle_request() gin.HandlerFunc {
 		request_id := uuid.New().String()
 		request := *ctx.Request
 		logger := log.With().Str("RequestId", request_id).Logger()
+		ctx.Header("X-Request-Id", request_id)
+		ctx.Header("Server", "xserver")
 		request_log_info := logger.Info()
 		request_log_info.Str("Client", ctx.ClientIP()).Str("Remote", request.RemoteAddr).Str("Method", request.Method).Str("Path", request.URL.String())
 		if request.ContentLength > 0 {
@@ -32,7 +34,7 @@ func handle_request() gin.HandlerFunc {
 		request_log_info.Msgf("Request Headers\n")
 		ctx.Next()
 		response_log_info := logger.Info()
-		response_log_info.Int("StatusCode", ctx.Writer.Status()).Str("Status", http.StatusText(ctx.Writer.Status())).Str("Server", "xserver")
+		response_log_info.Int("StatusCode", ctx.Writer.Status()).Str("Status", http.StatusText(ctx.Writer.Status()))
 		for k, v := range ctx.Writer.Header() {
 			response_log_info.Strs(k, v)
 		}
