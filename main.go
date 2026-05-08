@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -15,7 +16,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func handle_request() gin.HandlerFunc {
+func HandlerContext() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		start := time.Now()
 		request_id := uuid.New().String()
@@ -40,6 +41,55 @@ func handle_request() gin.HandlerFunc {
 		}
 		response_log_info.Str("Duration", time.Since(start).String()).Msgf("Response Headers\n")
 	}
+}
+
+func GetLocalUrls(port int) []string {
+	var urls []string
+	urls = append(urls, fmt.Sprintf("http://127.0.0.1:%d", port))
+	urls = append(urls, fmt.Sprintf("http://localhost:%d", port))
+	interfaces, err := net.Interfaces()
+	if err != nil {
+		return urls
+	}
+
+	for _, inet := range interfaces {
+		addrs, err := inet.Addrs()
+		if err != nil {
+			continue
+		}
+		for _, addr := range addrs {
+			var ip net.IP
+			switch v := addr.(type) {
+			case *net.IPNet:
+				ip = v.IP
+			case *net.IPAddr:
+				ip = v.IP
+			}
+			if ip == nil {
+				continue
+			}
+
+			if ip.IsLinkLocalUnicast() {
+				continue
+			}
+
+			if ip.To4() != nil {
+				urls = append(urls, fmt.Sprintf("http://%s:%d", ip.String(), port))
+			} else {
+				urls = append(urls, fmt.Sprintf("http://[%s]:%d", ip.String(), port))
+			}
+		}
+	}
+
+	seen := make(map[string]bool)
+	var unique []string
+	for _, u := range urls {
+		if !seen[u] {
+			seen[u] = true
+			unique = append(unique, u)
+		}
+	}
+	return unique
 }
 
 func init() {
@@ -96,10 +146,10 @@ func main() {
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	_ = engine.SetTrustedProxies(nil)
-	engine.Use(handle_request())
+	engine.Use(HandlerContext())
 	engine.StaticFS("/", gin.Dir(absolute_dir, false))
 	log.Info().Msg("X server start")
-	log.Info().Str("dir", absolute_dir).Int("port", port).Strs("URLs", []string{"http://localhost:" + strconv.Itoa(port), "http://127.0.0.1:" + strconv.Itoa(port)}).Msgf("Server:\n")
+	log.Info().Str("dir", absolute_dir).Int("port", port).Strs("urls", GetLocalUrls(port)).Msgf("Server:\n")
 	addr := fmt.Sprintf(":%d", port)
 	if err := engine.Run(addr); err != nil {
 		log.Fatal().Err(err).Msg("Exception")
