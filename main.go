@@ -100,7 +100,7 @@ func main() {
 	engine.StaticFS("/", gin.Dir(absolute_dir, false))
 	log.Info().Msg("X server start")
 	log.Info().Str("dir", absolute_dir).Int("port", port).Strs("URLs", []string{"http://localhost:" + strconv.Itoa(port), "http://127.0.0.1:" + strconv.Itoa(port)}).Msgf("Server:\n")
-	addr := fmt.Sprintf("0.0.0.0:%d", port)
+	addr := fmt.Sprintf(":%d", port)
 	if err := engine.Run(addr); err != nil {
 		log.Fatal().Err(err).Msg("Exception")
 	}
